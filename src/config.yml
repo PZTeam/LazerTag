@@ -1,0 +1,11 @@
+chatPrefix: '&8[&7LazerTag&8] '
+laser:
+  type: WOOD_HOE
+  mag: 30
+  meta:
+    name: '&cLaser'
+    lores:
+    - '&7Right click to shoot.'
+updater:
+  enabled: false
+  auto-update: false

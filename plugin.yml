@@ -1,0 +1,9 @@
+name: LazerTag
+version: 1.0.0
+author: Assist
+main: me.assist.lazertag.LazerTag
+depend: [WorldEdit]
+commands:
+  lazertag:
+    description: The main command
+    aliases: [lt]
