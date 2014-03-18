@@ -32,6 +32,8 @@ public class PlayerMoveListener implements Listener {
 							player.sendMessage(Header.NEUTRAL + "Leaving too early?");
 						}
 					}
+					
+					break;
 				}
 			}
 		}

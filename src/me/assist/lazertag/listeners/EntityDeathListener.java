@@ -31,15 +31,16 @@ public class EntityDeathListener implements Listener {
 								ScoreManager.getInstance().applyPoint(arena, arena.getTeam(k));
 
 								PlayerStatManager.getInstance().addKill(k);
-								PlayerStatManager.getInstance().addDeath(v);
 
 								arena.broadcastMessage(ChatColor.BLUE + v.getName() + ChatColor.GRAY + " was killed by " + ChatColor.BLUE + k.getName() + ChatColor.GRAY + "!");
 								break;
 							}
 						}
 					}
-
+					
+					PlayerStatManager.getInstance().addDeath(v);
 					event.getDrops().clear();
+					break;
 				}
 			}
 		}

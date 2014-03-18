@@ -21,6 +21,7 @@ public class EntityDamageListener implements Listener {
 			for (Arena arena : ArenaManager.getInstance().getArenas()) {
 				if (arena.containsSpectator(v)) {
 					event.setCancelled(true);
+					break;
 				}
 			}
 		}

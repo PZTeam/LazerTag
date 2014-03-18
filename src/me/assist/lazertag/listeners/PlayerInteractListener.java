@@ -46,6 +46,7 @@ public class PlayerInteractListener implements Listener {
 				for (Arena arena : ArenaManager.getInstance().getArenas()) {
 					if (arena.containsPlayer(p)) {
 						p.launchProjectile(Arrow.class);
+						break;
 					}
 				}
 			}

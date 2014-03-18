@@ -17,6 +17,7 @@ public class BlockBreakListener implements Listener {
 		for (Arena arena : ArenaManager.getInstance().getArenas()) {
 			if (arena.containsPlayer(player) || arena.containsSpectator(player)) {
 				event.setCancelled(true);
+				break;
 			}
 		}
 	}

@@ -29,6 +29,8 @@ public class EntityDamageByEntityListener implements Listener {
 							}
 						}
 					}
+					
+					break;
 				}
 			}
 		}

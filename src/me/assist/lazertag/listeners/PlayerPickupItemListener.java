@@ -15,8 +15,9 @@ public class PlayerPickupItemListener implements Listener {
 		Player player = event.getPlayer();
 		
 		for (Arena arena : ArenaManager.getInstance().getArenas()) {
-			if (arena.containsPlayer(player) || arena.containsSpectator(player)) {
+			if (arena.containsSpectator(player)) {
 				event.setCancelled(true);
+				break;
 			}
 		}
 	}

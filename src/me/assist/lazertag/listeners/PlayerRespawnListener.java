@@ -18,6 +18,7 @@ public class PlayerRespawnListener implements Listener {
 		for (Arena arena : ArenaManager.getInstance().getArenas()) {
 			if (arena.containsPlayer(p)) {
 				event.setRespawnLocation(LocationUtil.getSpawn(arena, arena.getTeam(p)));
+				break;
 			}
 		}
 	}
