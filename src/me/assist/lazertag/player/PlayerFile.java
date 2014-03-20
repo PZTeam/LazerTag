@@ -8,20 +8,20 @@ import me.assist.lazertag.LazerTag;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class PlayerStat {
+public class PlayerFile {
 
 	private String name = null;
 
 	private File file;
 	private FileConfiguration conf;
 
-	public PlayerStat(String name) {
+	public PlayerFile(String name) {
 		this.name = name;
 	}
 
 	public void load() {
 		if (file == null) {
-			file = new File(LazerTag.getInstance().getDataFolder() + File.separator + "stats", name + ".yml");
+			file = new File(LazerTag.getInstance().getDataFolder() + File.separator + "players", name + ".yml");
 		}
 
 		conf = YamlConfiguration.loadConfiguration(file);

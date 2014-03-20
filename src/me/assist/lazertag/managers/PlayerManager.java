@@ -1,24 +1,28 @@
-package me.assist.lazertag.player;
+package me.assist.lazertag.managers;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import me.assist.lazertag.LazerTag;
+import me.assist.lazertag.arena.Arena;
+import me.assist.lazertag.arena.Team;
+import me.assist.lazertag.player.PlayerFile;
 import me.assist.lazertag.util.ValueComparator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class PlayerStatManager {
+public class PlayerManager {
 
 	private HashMap<String, Integer> kills = new HashMap<String, Integer>();
 	private HashMap<String, Integer> deaths = new HashMap<String, Integer>();
 
-	private static PlayerStatManager playerStatManager;
+	private static PlayerManager playerStatManager;
 
-	public static PlayerStatManager getInstance() {
+	public static PlayerManager getInstance() {
 		if (playerStatManager == null)
-			playerStatManager = new PlayerStatManager();
+			playerStatManager = new PlayerManager();
 		return playerStatManager;
 	}
 
@@ -31,14 +35,12 @@ public class PlayerStatManager {
 		return kills.containsKey(name) && deaths.containsKey(name);
 	}
 
-	public void addKill(Player player) {
-		if (!isSetup(player.getName()))
-			setupStat(player);
+	public void addKill(Player p) {
+		if (!isSetup(p.getName()))
+			setupStat(p);
 
-		int cur = kills.get(player.getName());
-
-		kills.remove(player.getName());
-		kills.put(player.getName(), cur++);
+		int cur = kills.containsKey(p.getName()) ? kills.get(p.getName()) : 0;
+		kills.put(p.getName(), ++cur);
 	}
 
 	public void addDeath(Player player) {
@@ -51,11 +53,15 @@ public class PlayerStatManager {
 	}
 
 	public int getKills(String name) {
-		return new PlayerStat(name).getConfig().getInt("kills", 0);
+		return new PlayerFile(name).getConfig().getInt("kills", 0);
 	}
 
 	public int getDeaths(String name) {
-		return new PlayerStat(name).getConfig().getInt("deaths", 0);
+		return new PlayerFile(name).getConfig().getInt("deaths", 0);
+	}
+	
+	public int getPoints(String name) {
+		return new PlayerFile(name).getConfig().getInt("points", 0);
 	}
 
 	public Map<String, Integer> topKills() {
@@ -80,17 +86,38 @@ public class PlayerStatManager {
 		return ValueComparator.sortByValues(top);
 	}
 
-	public void saveData() {
+	public void save1(Arena arena, Team t, boolean win) {
+		for (Object s : arena.getPlayers().keySet().toArray()) {
+			String name = (String) s;
+			Player p = Bukkit.getPlayerExact(name);
+
+			if (p != null) {
+				if (arena.getTeam(p) == t) {
+					if (!isSetup(name))
+						setupStat(p);
+
+					PlayerFile stat = new PlayerFile(name);
+					// original + kills + 10 for participation + 10 for winning or 0 for losing
+					stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + kills.get(name) + 10 + (win ? 10 : 0));
+					stat.save();
+				}
+			}
+		}
+
+		save2();
+	}
+
+	public void save2() {
 		for (String s : kills.keySet()) {
-			saveSpecific(s);
+			save1_2(s);
 		}
 	}
 
-	public void saveSpecific(String name) {
+	public void save1_2(String name) {
 		if (!isSetup(name))
 			return;
 
-		PlayerStat stat = new PlayerStat(name);
+		PlayerFile stat = new PlayerFile(name);
 
 		stat.getConfig().set("kills", stat.getConfig().getInt("kills", 0) + kills.get(name));
 		stat.getConfig().set("deaths", stat.getConfig().getInt("deaths", 0) + deaths.get(name));

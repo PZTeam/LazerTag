@@ -1,7 +1,8 @@
-package me.assist.lazertag.game;
+package me.assist.lazertag.game.tasks;
 
 import me.assist.lazertag.Header;
 import me.assist.lazertag.arena.Arena;
+import me.assist.lazertag.game.GameManager;
 
 import org.bukkit.ChatColor;
 

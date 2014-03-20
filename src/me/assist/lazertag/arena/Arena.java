@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import me.assist.lazertag.BoardManager;
 import me.assist.lazertag.SignWall;
 import me.assist.lazertag.game.GameManager;
-import me.assist.lazertag.game.ScoreManager;
+import me.assist.lazertag.managers.BoardManager;
+import me.assist.lazertag.managers.ScoreManager;
+import me.assist.lazertag.managers.PlayerManager;
 import me.assist.lazertag.player.PlayerData;
-import me.assist.lazertag.player.PlayerStatManager;
 import me.assist.lazertag.util.LocationUtil;
 
 import org.bukkit.Bukkit;
@@ -159,24 +159,22 @@ public class Arena {
 	}
 
 	public synchronized void reset() {
-		PlayerStatManager.getInstance().saveData();
-
+		PlayerManager.getInstance().save2();
 		ScoreManager.getInstance().resetScores(this);
 		BoardManager.getInstance().removeScoreboard(this);
-		PlayerStatManager.getInstance().saveData();
 
 		for (Object s : getPlayers().keySet().toArray()) {
 			Player p = Bukkit.getPlayerExact((String) s);
 
 			if (p != null)
-				removePlayer(Bukkit.getPlayerExact((String) s));
+				removePlayer(p);
 		}
 		
 		for (Object s : getSpectators().toArray()) {
 			Player p = Bukkit.getPlayerExact((String) s);
 			
 			if(p != null)
-				removeSpectator(Bukkit.getPlayerExact((String) s));
+				removeSpectator(p);
 		}
 
 		state = ArenaState.WAITING;

@@ -29,10 +29,10 @@ public class CreateArena implements SubCommand {
 				if (sel != null) {
 					Location start = new Location(player.getWorld(), sel.getNativeMinimumPoint().getBlockX(), sel.getNativeMinimumPoint().getBlockY(), sel.getNativeMinimumPoint().getBlockZ());
 					Location end = new Location(player.getWorld(), sel.getNativeMaximumPoint().getBlockX(), sel.getNativeMaximumPoint().getBlockY(), sel.getNativeMaximumPoint().getBlockZ());
-
+					
 					ArenaManager.getInstance().createArena(args[0]);
 					ArenaFile file = new ArenaFile(args[0]);
-
+					
 					file.getConfig().set("region.start", LocationUtil.locationToString(start, true));
 					file.getConfig().set("region.end", LocationUtil.locationToString(end, true));
 

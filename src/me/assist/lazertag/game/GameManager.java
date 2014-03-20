@@ -2,13 +2,17 @@ package me.assist.lazertag.game;
 
 import java.util.HashMap;
 
-import me.assist.lazertag.BoardManager;
 import me.assist.lazertag.Header;
 import me.assist.lazertag.LazerTag;
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaState;
 import me.assist.lazertag.arena.Team;
-import me.assist.lazertag.player.PlayerStatManager;
+import me.assist.lazertag.game.tasks.CountdownTask;
+import me.assist.lazertag.game.tasks.GameTask;
+import me.assist.lazertag.game.tasks.Task;
+import me.assist.lazertag.managers.BoardManager;
+import me.assist.lazertag.managers.ScoreManager;
+import me.assist.lazertag.managers.PlayerManager;
 import me.assist.lazertag.util.WeaponUtil;
 
 import org.bukkit.Bukkit;
@@ -44,7 +48,7 @@ public class GameManager {
 		BoardManager.getInstance().createScoreboard(arena);
 
 		for (Object s : arena.getPlayers().keySet().toArray()) {
-			PlayerStatManager.getInstance().setupStat(Bukkit.getPlayerExact((String) s));
+			PlayerManager.getInstance().setupStat(Bukkit.getPlayerExact((String) s));
 		}
 
 		arena.setState(ArenaState.PLAYING);
@@ -75,8 +79,10 @@ public class GameManager {
 			else if (reason == StopReason.SCORE_LIMIT_REACHED)
 				arena.broadcastMessage(Header.NEUTRAL + "Score limit reached! Team " + (winner == Team.RED ? ChatColor.RED + "Red" : ChatColor.BLUE + "Blue") + ChatColor.GRAY + " has won the game!");
 			else
-				arena.broadcastMessage(Header.NEUTRAL + "The game ended.");
+				arena.broadcastMessage(Header.NEUTRAL + "The game has ended.");
 
+			PlayerManager.getInstance().save1(arena, winner, true);
+			PlayerManager.getInstance().save1(arena, winner == Team.BLUE ? Team.RED : Team.BLUE, false);
 			arena.reset();
 		}
 	}

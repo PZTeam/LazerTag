@@ -1,4 +1,4 @@
-package me.assist.lazertag.game;
+package me.assist.lazertag.game.tasks;
 
 import me.assist.lazertag.arena.Arena;
 

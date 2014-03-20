@@ -1,10 +1,9 @@
-package me.assist.lazertag;
+package me.assist.lazertag.managers;
 
 import java.util.HashMap;
 
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.Team;
-import me.assist.lazertag.game.ScoreManager;
 import me.assist.lazertag.util.TimeUtil;
 
 import org.bukkit.Bukkit;
@@ -17,7 +16,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public class BoardManager {
 
-	private HashMap<Arena, HashMap<Team, Scoreboard>> boardList = new HashMap<Arena, HashMap<Team, Scoreboard>>();
+	private HashMap<Arena, HashMap<Team, Scoreboard>> boardMap = new HashMap<Arena, HashMap<Team, Scoreboard>>();
 
 	private static BoardManager instance;
 
@@ -49,7 +48,7 @@ public class BoardManager {
 
 		map.put(Team.BLUE, board2);
 
-		boardList.put(arena, map);
+		boardMap.put(arena, map);
 		// board 2 end
 
 		for (Object s : arena.getPlayers().keySet().toArray()) {
@@ -68,12 +67,12 @@ public class BoardManager {
 			Bukkit.getPlayerExact((String) s).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 		}
 
-		boardList.remove(arena);
+		boardMap.remove(arena);
 	}
 
 	private Scoreboard getScoreboard(Arena arena, Team t) {
-		if (boardList.get(arena).get(t) != null)
-			return boardList.get(arena).get(t);
+		if (boardMap.get(arena).get(t) != null)
+			return boardMap.get(arena).get(t);
 		return null;
 	}
 	

@@ -22,19 +22,17 @@ public class ArenaManager {
 
 		if (!file.getConfig().contains("minPlayers")) {
 			file.getConfig().set("minPlayers", 8);
-			file.save();
 		}
 		
 		if (!file.getConfig().contains("maxPlayers")) {
 			file.getConfig().set("maxPlayers", 10);
-			file.save();
 		}
 		
 		if (!file.getConfig().contains("scoreLimit")) {
 			file.getConfig().set("scoreLimit", 50);
-			file.save();
 		}
-
+		
+		file.save();
 		return arena;
 	}
 

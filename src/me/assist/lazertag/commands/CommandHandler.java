@@ -33,6 +33,7 @@ public class CommandHandler implements CommandExecutor {
 		commands.put("spectate", new Spectate());
 		commands.put("list", new List());
 		commands.put("top", new Top());
+		commands.put("me", new Me());
 		commands.put("update", new Update());
 	}
 

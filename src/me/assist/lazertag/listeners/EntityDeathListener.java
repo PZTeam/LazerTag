@@ -2,8 +2,8 @@ package me.assist.lazertag.listeners;
 
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaManager;
-import me.assist.lazertag.game.ScoreManager;
-import me.assist.lazertag.player.PlayerStatManager;
+import me.assist.lazertag.managers.ScoreManager;
+import me.assist.lazertag.managers.PlayerManager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -28,9 +28,9 @@ public class EntityDeathListener implements Listener {
 
 						if (arena.containsPlayer(k)) {
 							if (arena.getTeam(v) != arena.getTeam(k)) {
-								ScoreManager.getInstance().applyPoint(arena, arena.getTeam(k));
+								ScoreManager.getInstance().applyScore(arena, arena.getTeam(k));
 
-								PlayerStatManager.getInstance().addKill(k);
+								PlayerManager.getInstance().addKill(k);
 
 								arena.broadcastMessage(ChatColor.BLUE + v.getName() + ChatColor.GRAY + " was killed by " + ChatColor.BLUE + k.getName() + ChatColor.GRAY + "!");
 								break;
@@ -38,7 +38,7 @@ public class EntityDeathListener implements Listener {
 						}
 					}
 					
-					PlayerStatManager.getInstance().addDeath(v);
+					PlayerManager.getInstance().addDeath(v);
 					event.getDrops().clear();
 					break;
 				}
