@@ -2,7 +2,6 @@ package me.assist.lazertag.listeners;
 
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaManager;
-import me.assist.lazertag.managers.PlayerManager;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class PlayerQuitListener implements Listener {
 
 	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
-		if (PlayerManager.getInstance().isSetup(event.getPlayer().getName()))
-			PlayerManager.getInstance().save1_2(event.getPlayer().getName());
-		
+	public void onQuit(PlayerQuitEvent event) {		
 		for (Arena arena : ArenaManager.getInstance().getArenas()) {
 			if (arena.containsPlayer(event.getPlayer())) {
 				arena.removePlayer(event.getPlayer());

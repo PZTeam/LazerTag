@@ -7,7 +7,7 @@ import me.assist.lazertag.LazerTag;
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaManager;
 import me.assist.lazertag.arena.ArenaState;
-import me.assist.lazertag.util.SelectClassGUI;
+import me.assist.lazertag.util.gui.TeamGUI;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class Join implements SubCommand {
 			if (arena != null) {
 				if (arena.isJoinable()) {
 					if (!arena.containsPlayer(player)) {
-						SelectClassGUI.openGUI(player, arena);
+						TeamGUI.openGUI(player, arena);
 					} else {
 						player.sendMessage(Header.NEGATIVE + "You are already playing a game!");
 					}

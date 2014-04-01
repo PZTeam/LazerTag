@@ -7,8 +7,8 @@ import java.util.Random;
 import me.assist.lazertag.SignWall;
 import me.assist.lazertag.game.GameManager;
 import me.assist.lazertag.managers.BoardManager;
-import me.assist.lazertag.managers.ScoreManager;
 import me.assist.lazertag.managers.PlayerManager;
+import me.assist.lazertag.managers.ScoreManager;
 import me.assist.lazertag.player.PlayerData;
 import me.assist.lazertag.util.LocationUtil;
 
@@ -36,18 +36,22 @@ public class Arena {
 	}
 
 	public void addPlayer(Player player, Team team) {
-		getPlayers().put(player.getName(), team);
-		PlayerData.getInstance().prepareAddPlayer(player);
+		if (!containsPlayer(player)) {
+			getPlayers().put(player.getName(), team);
+			PlayerData.getInstance().prepareAddPlayer(player);
 
-		player.teleport(LocationUtil.getSpawn(this, team));
-		u();
+			player.teleport(LocationUtil.getSpawn(this, team));
+			u();
 
-		if (getPlayers().size() >= getMinPlayers()) {
-			GameManager.getInstance().startCountdown(this);
+			if (getPlayers().size() >= getMinPlayers()) {
+				GameManager.getInstance().startCountdown(this);
+			}
 		}
 	}
 
 	public void removePlayer(Player player) {
+		PlayerManager.getInstance().save1_2(player.getName());
+		
 		getPlayers().remove(player.getName());
 		player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 		PlayerData.getInstance().prepareRemovePlayer(player);
@@ -144,6 +148,7 @@ public class Arena {
 
 	public void setState(ArenaState state) {
 		this.state = state;
+		u();
 	}
 
 	public ArenaState getState() {
@@ -169,11 +174,11 @@ public class Arena {
 			if (p != null)
 				removePlayer(p);
 		}
-		
+
 		for (Object s : getSpectators().toArray()) {
 			Player p = Bukkit.getPlayerExact((String) s);
-			
-			if(p != null)
+
+			if (p != null)
 				removeSpectator(p);
 		}
 

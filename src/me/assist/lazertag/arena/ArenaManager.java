@@ -2,6 +2,8 @@ package me.assist.lazertag.arena;
 
 import java.util.ArrayList;
 
+import org.bukkit.entity.Player;
+
 public class ArenaManager {
 
 	private ArrayList<Arena> arenas;
@@ -23,15 +25,15 @@ public class ArenaManager {
 		if (!file.getConfig().contains("minPlayers")) {
 			file.getConfig().set("minPlayers", 8);
 		}
-		
+
 		if (!file.getConfig().contains("maxPlayers")) {
 			file.getConfig().set("maxPlayers", 10);
 		}
-		
+
 		if (!file.getConfig().contains("scoreLimit")) {
 			file.getConfig().set("scoreLimit", 50);
 		}
-		
+
 		file.save();
 		return arena;
 	}
@@ -57,5 +59,14 @@ public class ArenaManager {
 		}
 
 		return null;
+	}
+	
+	public boolean c(Player p) {
+		for(Arena a : getArenas()) {
+			if(a.containsPlayer(p) || a.containsSpectator(p))
+				return true;
+		}
+		
+		return false;
 	}
 }

@@ -1,6 +1,5 @@
 package me.assist.lazertag.listeners;
 
-import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaManager;
 
 import org.bukkit.entity.Entity;
@@ -18,11 +17,8 @@ public class EntityDamageListener implements Listener {
 		if (e instanceof Player) {
 			Player v = (Player) e;
 
-			for (Arena arena : ArenaManager.getInstance().getArenas()) {
-				if (arena.containsSpectator(v)) {
-					event.setCancelled(true);
-					break;
-				}
+			if (ArenaManager.getInstance().c(v)) {
+				event.setCancelled(true);
 			}
 		}
 	}

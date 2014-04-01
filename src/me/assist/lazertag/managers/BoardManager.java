@@ -64,7 +64,10 @@ public class BoardManager {
 
 	public synchronized void removeScoreboard(Arena arena) {
 		for (Object s : arena.getPlayers().keySet().toArray()) {
-			Bukkit.getPlayerExact((String) s).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+			Player p = Bukkit.getPlayerExact((String) s);
+
+			if (p != null)
+				p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
 		}
 
 		boardMap.remove(arena);

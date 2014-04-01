@@ -6,7 +6,6 @@ import java.util.logging.Level;
 
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaManager;
-import me.assist.lazertag.arena.Team;
 import me.assist.lazertag.commands.CommandHandler;
 import me.assist.lazertag.game.GameManager;
 import me.assist.lazertag.game.StopReason;
@@ -25,7 +24,6 @@ import me.assist.lazertag.listeners.PlayerQuitListener;
 import me.assist.lazertag.listeners.PlayerRespawnListener;
 import me.assist.lazertag.listeners.SignChangeListener;
 import me.assist.lazertag.managers.PlayerManager;
-import me.assist.lazertag.managers.ScoreManager;
 import me.assist.lazertag.util.Metrics;
 import me.assist.lazertag.util.Updater;
 import me.assist.lazertag.util.Updater.ReleaseType;
@@ -33,9 +31,6 @@ import me.assist.lazertag.util.Updater.UpdateType;
 import me.assist.lazertag.util.WeaponUtil;
 import me.assist.lazertag.util.WorldEditUtil;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class LazerTag extends JavaPlugin {
@@ -82,17 +77,6 @@ public class LazerTag extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerKickListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerMoveListener(), this);
 		getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
-
-		getServer().getPluginManager().registerEvents(new Listener() {
-			@EventHandler
-			public void onChat(AsyncPlayerChatEvent event) {
-				if (event.getMessage().equals("1")) {
-					PlayerManager.getInstance().addKill(event.getPlayer());
-				} else if(event.getMessage().equals("2")) {
-					ScoreManager.getInstance().applyScore(ArenaManager.getInstance().getArenas().get(0), Team.BLUE);
-				}
-			}
-		}, this);
 		
 		getCommand("lazertag").setExecutor(new CommandHandler());
 

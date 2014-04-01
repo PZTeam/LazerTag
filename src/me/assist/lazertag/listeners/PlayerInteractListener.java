@@ -36,6 +36,8 @@ public class PlayerInteractListener implements Listener {
 							p.chat("/lt join " + arena.getName());
 						}
 					}
+					
+					event.setCancelled(true);
 				}
 			}
 
@@ -43,11 +45,9 @@ public class PlayerInteractListener implements Listener {
 			ItemStack gun = WeaponUtil.build();
 
 			if (p.getInventory().getItemInHand().equals(gun)) {
-				for (Arena arena : ArenaManager.getInstance().getArenas()) {
-					if (arena.containsPlayer(p)) {
-						p.launchProjectile(Arrow.class);
-						break;
-					}
+				if (ArenaManager.getInstance().c(p)) {
+					Arrow a = p.launchProjectile(Arrow.class);
+					a.setVelocity(a.getVelocity().multiply(2D));
 				}
 			}
 		}

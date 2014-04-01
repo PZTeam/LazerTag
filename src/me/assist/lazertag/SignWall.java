@@ -4,6 +4,7 @@ import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.arena.ArenaFile;
 import me.assist.lazertag.arena.ArenaManager;
 import me.assist.lazertag.arena.ArenaState;
+import me.assist.lazertag.game.GameManager;
 import me.assist.lazertag.util.LocationUtil;
 
 import org.bukkit.Location;
@@ -24,9 +25,9 @@ public class SignWall {
 
 				if (arenaState == ArenaState.WAITING && !state.equals("Click to Join")) {
 					sign.setLine(1, "Click to Join");
-				}
-
-				if (arenaState == ArenaState.PLAYING && !state.equals("Game Running")) {
+				} else if (arenaState == ArenaState.STARTING && !state.equals("Starting in " + GameManager.getInstance().getCountdownTask(arena).getTimeLeft())) {
+					sign.setLine(1, "Starting in " + GameManager.getInstance().getCountdownTask(arena).getTimeLeft());
+				} else if (arenaState == ArenaState.PLAYING && !state.equals("Game Running")) {
 					sign.setLine(1, "Game Running");
 				}
 

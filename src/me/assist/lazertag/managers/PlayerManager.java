@@ -52,6 +52,13 @@ public class PlayerManager {
 		deaths.put(player.getName(), cur++);
 	}
 
+	public void addDoublePoints(String name, int amount) {
+		PlayerFile file = new PlayerFile(name);
+
+		file.getConfig().set("doublePoints", getDoublePoints(name) + amount);
+		file.save();
+	}
+
 	public int getKills(String name) {
 		return new PlayerFile(name).getConfig().getInt("kills", 0);
 	}
@@ -59,9 +66,21 @@ public class PlayerManager {
 	public int getDeaths(String name) {
 		return new PlayerFile(name).getConfig().getInt("deaths", 0);
 	}
-	
+
 	public int getPoints(String name) {
 		return new PlayerFile(name).getConfig().getInt("points", 0);
+	}
+
+	public int getDoublePoints(String name) {
+		return new PlayerFile(name).getConfig().getInt("doublePoints", 0);
+	}
+
+	public void removePoints(String name, int amount) {
+		PlayerFile file = new PlayerFile(name);
+		int points = file.getConfig().getInt("points");
+
+		file.getConfig().set("points", points - amount < 0 ? 0 : points - amount);
+		file.save();
 	}
 
 	public Map<String, Integer> topKills() {
@@ -97,8 +116,15 @@ public class PlayerManager {
 						setupStat(p);
 
 					PlayerFile stat = new PlayerFile(name);
-					// original + kills + 10 for participation + 10 for winning or 0 for losing
-					stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + kills.get(name) + 10 + (win ? 10 : 0));
+					int points = getDoublePoints(name);
+					
+					if (points > 0) {
+						stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + (kills.get(name) + 10 + (win ? 10 : 0) * 2));
+						stat.getConfig().set("doublePoints", points == 1 ? 0 : points - 1);
+					} else {
+						stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + kills.get(name) + 10 + (win ? 10 : 0));
+					}
+
 					stat.save();
 				}
 			}
@@ -107,13 +133,31 @@ public class PlayerManager {
 		save2();
 	}
 
+	public void save1_2(String name) {
+		if (!isSetup(name))
+			return;
+
+		PlayerFile stat = new PlayerFile(name);
+		int points = getDoublePoints(name);
+		
+		if (points > 0) {
+			stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + (kills.get(name) * 2));
+			stat.getConfig().set("doublePoints", points == 1 ? 0 : points - 1);
+		} else {
+			stat.getConfig().set("points", stat.getConfig().getInt("points", 0) + kills.get(name));
+		}
+
+		stat.save();
+		save2_2(name);
+	}
+
 	public void save2() {
 		for (String s : kills.keySet()) {
-			save1_2(s);
+			save2_2(s);
 		}
 	}
 
-	public void save1_2(String name) {
+	public void save2_2(String name) {
 		if (!isSetup(name))
 			return;
 

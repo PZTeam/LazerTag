@@ -1,6 +1,7 @@
 package me.assist.lazertag.game.tasks;
 
 import me.assist.lazertag.Header;
+import me.assist.lazertag.SignWall;
 import me.assist.lazertag.arena.Arena;
 import me.assist.lazertag.game.GameManager;
 
@@ -34,10 +35,15 @@ public class CountdownTask implements Runnable, Task {
 		}
 
 		time--;
+		SignWall.updateSigns(getArena());
 	}
 
 	public Arena getArena() {
 		return arena;
+	}
+	
+	public int getTimeLeft() {
+		return time;
 	}
 
 	public int getId() {

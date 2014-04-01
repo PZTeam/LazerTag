@@ -19,7 +19,12 @@ public class ForceStart implements SubCommand {
 			Arena arena = ArenaManager.getInstance().getArena(args[0]);
 
 			if (arena != null) {
-				GameManager.getInstance().startCountdown(arena);
+				if(!GameManager.getInstance().isActive(arena)) {
+					GameManager.getInstance().startCountdown(arena);
+				} else {
+					player.sendMessage(Header.NEGATIVE + "This game is already running.");
+				}
+				
 			} else {
 				player.sendMessage(Header.NEGATIVE + "The arena '" + ChatColor.DARK_RED + args[0] + ChatColor.RED + "' doesn't exist!");
 			}
